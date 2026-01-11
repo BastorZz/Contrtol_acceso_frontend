@@ -1,0 +1,97 @@
+/* ESTILO GENERAL DE LA PÁGINA */
+body {
+    background: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* LOGO */
+.logo {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 40px;
+    display: block;
+}
+
+/* BOTONES GENERALES */
+.btn {
+    width: 80%;
+    max-width: 320px;
+    padding: 20px;
+    margin: 15px auto;
+    font-size: 22px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+}
+
+/* COLORES DE CADA BOTÓN */
+.start {
+    background: #4CAF50;
+    color: white;
+}
+
+.stop {
+    background: #E53935;
+    color: white;
+}
+
+.admin {
+    background: #1E88E5; /* o blue si prefieres */
+    color: white;
+}
+
+/* ESTADO DEL ENTRENAMIENTO */
+#status {
+    margin-top: 20px;
+    font-size: 18px;
+    min-height: 24px; /* evita saltos visuales */
+}
+
+/* BOTÓN DE GOOGLE ESCALADO */
+#google-btn {
+    transform: scale(2.5);
+    transform-origin: top center;
+    margin-top: 60px;
+    width: 100%;
+    overflow: visible;
+}
+
+/* Evita que se corte el botón */
+#login-screen { 
+    overflow: visible; 
+}
+
+/* TÍTULO PRINCIPAL */
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+.title span {
+    font-size: 24px;
+    font-weight: normal;
+    display: block;
+    margin-top: 5px;
+}
+
+/* CLASE PARA OCULTAR ELEMENTOS */
+.hidden {
+    display: none !important;
+}
+
+

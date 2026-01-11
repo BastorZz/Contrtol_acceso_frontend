@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Entrenamientos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Logo del club -->
+        <img src="logo.png" class="logo" alt="Logo UDA Benalmádena">
+
+        <!-- Pantalla de login -->
+        <div id="login-screen">
+            <h1 class="title"> 
+                Web control de acceso<br> 
+                <span>Entrenadores UDA Benalmádena</span> 
+            </h1>
+
+            <!-- Botón de Google -->
+            <div id="google-btn"></div>
+        </div>
+
+        <!-- Pantalla principal -->
+        <div id="main-screen" style="display: none;">
+            <h2 id="welcome"></h2>
+
+            <!-- Botones principales -->
+            <button class="btn start" onclick="startTraining()">Comenzar entrenamiento</button>
+            <button class="btn stop" onclick="stopTraining()">Terminar entrenamiento</button>
+            <button id="admin-btn" class="btn admin hidden" onclick="goToAdmin()">Panel de administración</button>
+
+            <!-- Estado del entrenamiento -->
+            <p id="status"></p>
+        </div>
+
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
+
+

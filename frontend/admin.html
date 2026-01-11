@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <div class="container">
+        <img src="logo.png" class="logo">
+
+        <h1>Panel de Administración</h1>
+        <p>Bienvenido administrador</p>
+
+        <!-- Botones del panel -->
+        <button onclick="loadCheckins()">Ver entrenamientos</button>
+        <button onclick="loadAlerts()">Ver alertas</button>
+        <button onclick="loadUsers()">Gestionar roles</button>
+
+        <!-- Título dinámico de la sección -->
+        <h2 id="section-title">Selecciona una opción</h2>
+
+        <!-- Contenido dinámico -->
+        <div id="content"></div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

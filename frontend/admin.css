@@ -1,0 +1,81 @@
+/* ============================
+   ESTILO GENERAL
+============================ */
+body {
+    background: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================
+   LOGO
+============================ */
+.logo {
+    width: 200px;
+    margin-top: 20px;
+}
+
+/* ============================
+   CONTENEDOR PRINCIPAL
+============================ */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ============================
+   BOTONES DEL PANEL
+============================ */
+button {
+    width: 80%;
+    padding: 15px;
+    margin: 10px auto;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1E88E5;
+    color: white;
+    cursor: pointer;
+    display: block;
+}
+
+button:hover {
+    background: #1565C0;
+}
+
+/* ============================
+   CONTENIDO DINÁMICO
+============================ */
+#content {
+    margin-top: 25px;
+    text-align: left; /* para que las tablas se vean bien */
+}
+
+/* ============================
+   TABLAS DEL PANEL
+============================ */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.admin-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+    text-align: left;
+}
+
+.admin-table tr:hover {
+    background: #f9f9f9;
+}
