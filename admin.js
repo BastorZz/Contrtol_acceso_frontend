@@ -1,34 +1,6 @@
 console.log("ADMIN.JS CARGADO");
 
 // ===============================
-// CONFIG
-// ===============================
-const API_URL = "https://control-acceso-q2xb.onrender.com";
-
-// Mostrar mensaje mientras el backend despierta
-function showLoading() {
-    const content = document.getElementById("content");
-    if (content) {
-        content.innerHTML = "<p>⏳ Conectando con el servidor...</p>";
-    }
-}
-
-// Wake-up automático del backend
-async function wakeBackend() {
-    showLoading();
-    try {
-        await fetch(API_URL + "/ping");
-        document.getElementById("content").innerHTML = "";
-    } catch (e) {
-        console.warn("Backend tardando en despertar...");
-    }
-}
-
-// Ejecutar wake-up al cargar admin.html
-window.onload = wakeBackend;
-
-
-// ===============================
 // CARGAR ENTRENAMIENTOS
 // ===============================
 function loadCheckins() {
@@ -37,7 +9,7 @@ function loadCheckins() {
     document.getElementById("section-title").innerText = "Entrenamientos";
     document.getElementById("content").innerHTML = "<p>Cargando entrenamientos...</p>";
 
-    fetch(API_URL + "/admin/checkins", {
+    fetch("https://control-acceso-backend.fly.dev/admin/checkins", {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
@@ -55,7 +27,7 @@ function loadCheckins() {
 
 
 // ===============================
-// RENDER ENTRENAMIENTOS
+// RENDER ENTRENAMIENTOS ORDENADOS POR DÍA + BORRAR
 // ===============================
 function renderCheckins(checkins) {
     console.log("renderCheckins() ejecutado con:", checkins);
@@ -67,8 +39,10 @@ function renderCheckins(checkins) {
         return;
     }
 
+    // ORDENAR POR FECHA (más recientes primero)
     checkins.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+    // AGRUPAR POR DÍA
     const grupos = {};
     checkins.forEach(c => {
         const fecha = new Date(c.timestamp).toLocaleDateString("es-ES", {
@@ -83,6 +57,7 @@ function renderCheckins(checkins) {
 
     let html = "";
 
+    // RECORRER CADA DÍA
     for (const dia in grupos) {
         html += `<h3 style="margin-top:20px;">— ${dia} —</h3>`;
         html += `
@@ -131,7 +106,7 @@ function renderCheckins(checkins) {
 function deleteCheckin(id) {
     if (!confirm("¿Seguro que quieres eliminar este entrenamiento?")) return;
 
-    fetch(`${API_URL}/admin/checkins/${id}`, {
+    fetch(`https://control-acceso-backend.fly.dev/admin/checkins/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
@@ -140,6 +115,7 @@ function deleteCheckin(id) {
     .then(res => res.json())
     .then(() => loadCheckins());
 }
+
 
 
 // ===============================
@@ -151,7 +127,7 @@ function loadAlerts() {
     document.getElementById("section-title").innerText = "Alertas";
     document.getElementById("content").innerHTML = "<p>Cargando alertas...</p>";
 
-    fetch(API_URL + "/admin/checkins/invalid", {
+    fetch("https://control-acceso-backend.fly.dev/admin/checkins/invalid", {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
@@ -169,7 +145,7 @@ function loadAlerts() {
 
 
 // ===============================
-// RENDER ALERTAS
+// RENDER ALERTAS ORDENADAS POR DÍA
 // ===============================
 function renderAlerts(alerts) {
     console.log("renderAlerts() ejecutado con:", alerts);
@@ -181,8 +157,10 @@ function renderAlerts(alerts) {
         return;
     }
 
+    // ORDENAR POR FECHA
     alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+    // AGRUPAR POR DÍA
     const grupos = {};
     alerts.forEach(a => {
         const fecha = new Date(a.timestamp).toLocaleDateString("es-ES", {
@@ -229,8 +207,6 @@ function renderAlerts(alerts) {
 
     content.innerHTML = html;
 }
-
-
 // ===============================
 // CARGAR USUARIOS
 // ===============================
@@ -240,7 +216,7 @@ function loadUsers() {
     document.getElementById("section-title").innerText = "Gestionar usuarios";
     document.getElementById("content").innerHTML = "<p>Cargando usuarios...</p>";
 
-    fetch(API_URL + "/admin/users", {
+    fetch("https://control-acceso-backend.fly.dev/admin/users", {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
@@ -257,8 +233,9 @@ function loadUsers() {
 }
 
 
+
 // ===============================
-// RENDER USUARIOS
+// RENDER USUARIOS + FORMULARIO CREAR
 // ===============================
 function renderUsers(users) {
     console.log("renderUsers() ejecutado con:", users);
@@ -316,6 +293,7 @@ function renderUsers(users) {
 }
 
 
+
 // ===============================
 // CREAR USUARIO
 // ===============================
@@ -326,7 +304,7 @@ function createUser() {
     const email = document.getElementById("newEmail").value;
     const role = document.getElementById("newRole").value;
 
-    fetch(API_URL + "/admin/users", {
+    fetch("https://control-acceso-backend.fly.dev/admin/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -339,6 +317,7 @@ function createUser() {
 }
 
 
+
 // ===============================
 // ELIMINAR USUARIO
 // ===============================
@@ -347,7 +326,7 @@ function deleteUser(id) {
 
     if (!confirm("¿Seguro que quieres eliminar este usuario?")) return;
 
-    fetch(`${API_URL}/admin/users/${id}`, {
+    fetch(`https://control-acceso-backend.fly.dev/admin/users/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
@@ -358,15 +337,16 @@ function deleteUser(id) {
 }
 
 
+
 // ===============================
-– CAMBIAR ROL
+// CAMBIAR ROL
 // ===============================
 function changeRole(id, currentRole) {
     console.log("changeRole() ejecutado", id, currentRole);
 
     const newRole = currentRole === "trainer" ? "admin" : "trainer";
 
-    fetch(`${API_URL}/admin/users/${id}/role?role=${newRole}`, {
+    fetch(`https://control-acceso-backend.fly.dev/admin/users/${id}/role?role=${newRole}`, {
         method: "POST",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
