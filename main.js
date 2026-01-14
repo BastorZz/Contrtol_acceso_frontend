@@ -2,32 +2,7 @@ let userToken = null;
 let userName = null;
 let userRole = null;
 
-const API_URL = "https://control-acceso-q2xb.onrender.com";
-
-// 🔹 Mostrar mensaje mientras el backend despierta
-function showLoading() {
-    const status = document.getElementById("status");
-    if (status) {
-        status.innerText = "⏳ Conectando con el servidor...";
-    }
-}
-
-// 🔹 Wake-up automático del backend al cargar la web
-async function wakeBackend() {
-    showLoading();
-    try {
-        await fetch(API_URL + "/ping", { method: "GET" });
-        document.getElementById("status").innerText = "";
-    } catch (e) {
-        console.warn("Backend tardando en despertar...");
-    }
-}
-
 window.onload = function () {
-
-    // Despertar backend al abrir la web
-    wakeBackend();
-
     google.accounts.id.initialize({
         client_id: "39491485064-qh43lnjj7thv7mpggc3bbnm539dt3keh.apps.googleusercontent.com",
         callback: handleCredentialResponse
@@ -42,13 +17,14 @@ window.onload = function () {
 // Función robusta de login con reintentos
 function handleCredentialResponse(response) {
 
+    // Si Google devuelve un token vacío → reintentar sin molestar al usuario
     if (!response.credential || response.credential.length < 20) {
         console.warn("Google devolvió un token vacío, reintentando...");
         setTimeout(() => google.accounts.id.prompt(), 500);
         return;
     }
 
-    fetch(API_URL + "/auth/login", {
+    fetch("https://control-acceso-backend.fly.dev/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: response.credential })
@@ -56,25 +32,31 @@ function handleCredentialResponse(response) {
     .then(res => res.json())
     .then(data => {
 
+        // Si el backend pide reintentar → reintentar automáticamente
         if (data.retry === true) {
             console.warn("Backend pidió reintentar login, reintentando...");
             setTimeout(() => google.accounts.id.prompt(), 500);
             return;
         }
 
+        // Si el backend devuelve error real
         if (data.detail) {
             alert("Acceso no autorizado");
             return;
         }
 
+        // Guardar SOLO el JWT interno del backend
         userToken = data.token;
         userName = data.name;
         userRole = data.role;
 
+        // Guardar token para admin
         localStorage.setItem("token", userToken);
 
+        // Eliminar token de Google
         response.credential = null;
 
+        // Mostrar pantalla principal
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("main-screen").style.display = "block";
 
@@ -89,7 +71,7 @@ function handleCredentialResponse(response) {
 function startTraining() {
     navigator.geolocation.getCurrentPosition(pos => {
 
-        fetch(API_URL + "/checkin/in", {
+        fetch("https://control-acceso-backend.fly.dev/checkin/in", {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json",
@@ -121,7 +103,7 @@ function startTraining() {
 function stopTraining() {
     navigator.geolocation.getCurrentPosition(pos => {
 
-        fetch(API_URL + "/checkin/out", {
+        fetch("https://control-acceso-backend.fly.dev/checkin/out", {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json",
